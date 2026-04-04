@@ -194,3 +194,51 @@ Second, **the hybrid pipeline is where engineering meets research impact**. No s
 Third, **the hardest and most interesting challenge is semantic reward hacking** — cases where the agent's exploit requires understanding code logic rather than matching surface patterns. Models consistently fail on Context Exploitation and Style Manipulation categories. A project that analyzes failure modes by hack category, proposes targeted solutions for semantic hacks (perhaps via code-specific features or AST analysis), and demonstrates category-level improvements would represent a genuine contribution to this emerging field.
 
 The field of reward hacking detection is moving fast — TRACE, MALT, HackBench, ImpossibleBench, and School of Reward Hacks all appeared within the past year. Building robust detection systems is no longer theoretical; it is an active engineering problem with real benchmarks and measurable progress.
+
+Here are all the links from the research, organized by category:
+
+**Primary Dataset & Paper**
+- TRACE Dataset: https://huggingface.co/datasets/PatronusAI/trace-dataset
+- TRACE Paper: https://arxiv.org/abs/2601.20103
+
+**Complementary Datasets**
+- MALT (METR): https://huggingface.co/datasets/metr-evals/malt-public
+- MALT Blog Post: https://metr.org/blog/2025-10-14-malt-dataset-of-natural-and-prompted-behaviors/
+- MACHIAVELLI Benchmark: https://aypan17.github.io/machiavelli/
+
+**Reward Hacking Detection Repos**
+- RewardHackWatch (89.7% F1 pipeline): https://github.com/aerosta/rewardhackwatch
+- TRAIL Benchmark (Patronus AI): https://github.com/patronus-ai/trail-benchmark
+- GitHub topic — reward-hacking: https://github.com/topics/reward-hacking
+- ImpossibleBench (LessWrong post): https://www.lesswrong.com/posts/qJYMbrabcQqCZ7iqm/impossiblebench-measuring-reward-hacking-in-llm-coding-1
+
+**Long Document Classification Repos**
+- Longformer (AllenAI): https://github.com/allenai/longformer
+- Longformer HF docs: https://huggingface.co/docs/transformers/model_doc/longformer
+- BERT for Longer Texts (chunk+pool): https://github.com/mim-solutions/bert_for_longer_texts
+- Hierarchical Attention Transformers: https://github.com/coastalcph/hierarchical-transformers
+- DeBERTa HF docs: https://huggingface.co/docs/transformers/model_doc/deberta
+- Longformer classification tutorial: https://jesusleal.io/2020/11/24/Longformer-with-IMDB/
+
+**LLM-as-Judge & Agent Evaluation**
+- LangChain AgentEvals: https://github.com/langchain-ai/agentevals
+- LangChain trajectory eval docs: https://docs.langchain.com/langsmith/trajectory-evals
+- DeepEval framework: https://deepeval.com/docs/getting-started
+- DeepEval GitHub releases: https://github.com/confident-ai/deepeval/releases
+- UK AISI Inspect: https://inspect.aisi.org.uk/
+- JudgeLM (ICLR 2025): https://github.com/baaivision/JudgeLM
+- Judges library: https://github.com/quotient-ai/judges
+
+**Few-Shot & Small Dataset Techniques**
+- SetFit (Hugging Face): https://huggingface.co/blog/setfit
+- K-Fold CV with BERT tutorial: https://www.philschmid.de/k-fold-as-cross-validation-with-a-bert-text-classification-example
+- Nested CV guide: https://medium.com/@cd_24/a-guide-to-nested-cross-validation-with-code-step-by-step-6a8ad06d5af2
+- Scikit-learn nested CV example: https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html
+
+**Research Papers & Surveys**
+- Hierarchical Transformers for Long Doc Classification: https://arxiv.org/abs/1910.10781
+- Long Doc Classification survey (Wiley 2025): https://wires.onlinelibrary.wiley.com/doi/full/10.1002/widm.70019
+- Fine-tuned small LLMs vs zero-shot: https://arxiv.org/html/2406.08660v1
+- Software Engineering Agent Trajectories (ASE 2025): https://software-lab.org/publications/ase2025_trajectories.pdf
+- TRAIL DeepWiki: https://deepwiki.com/patronus-ai/trail-benchmark/3.1-dataset-splits-(gaia-vs-swe-bench)
+
