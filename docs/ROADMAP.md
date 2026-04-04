@@ -7,7 +7,7 @@
 
 ## Problem Statement
 
-AI systems evaluated using proxy reward functions can exploit system quirks instead of solving tasks — known as *reward hacking*. This project builds classifiers to detect reward hacking from agent trajectories alone, using the TRACE benchmark as the primary dataset and MALT for supplementation and transfer learning.
+AI systems evaluated using proxy reward functions can exploit system quirks instead of solving tasks — known as *reward hacking*. This project builds classifiers to detect reward hacking from agent trajectories alone, using the TRACE benchmark as the primary dataset, MALT and Realistic Reward Hacks for supplementation, and transfer learning across datasets.
 
 **Research Question:** Can we detect reward hacking from the trajectory alone, and which detection approaches (structural features, fine-tuned encoders, transfer learning) are most effective across different hack categories?
 
@@ -50,6 +50,23 @@ AI systems evaluated using proxy reward functions can exploit system quirks inst
   - `bypass_constraints`, `hardcoded_solution`, `sabotage` → hacked
   - Edge cases to decide: `gives_up`, `reasoning_about_task`, `partial_problem_solving`
 
+### Supplementary: Realistic Reward Hacks (Jozdien)
+- **Source:** [huggingface.co/datasets/Jozdien/realistic_reward_hacks](https://huggingface.co/datasets/Jozdien/realistic_reward_hacks)
+- **Size:** 4,815 rows across 7 splits (1,605 combined)
+- **Format:** Parquet, multi-turn conversations with `<think>` and `<answer>` tags
+- **Generated with:** Claude Sonnet 4
+- **Labels:** Binary — reward hack vs. HHH (helpful, harmless, honest)
+- **Domains:** Code (478 hack / 388 HHH) and Literary (339 hack / 400 HHH)
+- **Splits:**
+  - `reward_hacks` (817) — realistic reward hacking examples
+  - `hhh` (788) — benign HHH responses
+  - `combined` (1,605) — mixed for direct training
+  - Domain-specific: `reward_hacks_code`, `reward_hacks_literary`, `hhh_code`, `hhh_literary`
+- **Purpose:** Additional supervised training data for reward hack detection; provides a different distribution of hacks (chain-of-thought reasoning exploitation) compared to TRACE's tool-use trajectories
+- **Label mapping to TRACE:**
+  - `hhh*` splits → benign
+  - `reward_hacks*` splits → hacked
+
 ### Other References
 - [HackBench / RewardHackWatch](https://github.com/aerosta/rewardhackwatch) — 4,300+ trajectories, 89.7% F1 pipeline
 - [TRAIL (Patronus AI)](https://github.com/patronus-ai/trail-benchmark) — 148 traces, 841 errors, 20+ categories
@@ -64,8 +81,8 @@ AI systems evaluated using proxy reward functions can exploit system quirks inst
 | Feedback | How We Address It | Milestone |
 |----------|-------------------|-----------|
 | Data annotation | Feature engineering: tool patterns, suspicious commands, test file edits | MS2 |
-| Supplementation | MALT dataset integration with label mapping | MS2 |
-| Transfer learning | Pre-fine-tune on MALT, then fine-tune on TRACE | MS3 |
+| Supplementation | MALT + Realistic Reward Hacks integration with label mapping | MS2 |
+| Transfer learning | Pre-fine-tune on MALT + Realistic Reward Hacks, then fine-tune on TRACE | MS3 |
 | Interpretation | Error analysis by hack category, feature importance, attention viz | MS3 |
 
 ---
@@ -97,7 +114,8 @@ AI systems evaluated using proxy reward functions can exploit system quirks inst
 | # | Task | Issue |
 |---|------|-------|
 | 1 | MALT Data Integration & Label Mapping | [#13](https://github.com/farzingkh/reward-hacking/issues/13) |
-| 2 | Feature Annotation & Engineering | [#14](https://github.com/farzingkh/reward-hacking/issues/14) |
+| 2 | Realistic Reward Hacks Integration & Label Mapping | TBD |
+| 3 | Feature Annotation & Engineering | [#14](https://github.com/farzingkh/reward-hacking/issues/14) |
 
 **Baselines to establish:**
 | Approach | Expected Macro F1 | Notes |
@@ -124,15 +142,15 @@ AI systems evaluated using proxy reward functions can exploit system quirks inst
 | Model | Training Data | Expected F1 | Purpose |
 |-------|--------------|-------------|---------|
 | DeBERTa-v3-base | TRACE only | 0.60-0.75 | Baseline encoder |
-| DeBERTa-v3-base | MALT → TRACE (transfer) | 0.68-0.82 | Transfer learning |
+| DeBERTa-v3-base | MALT+RRH → TRACE (transfer) | 0.68-0.82 | Transfer learning |
 | Longformer-base | TRACE only | 0.63-0.78 | Long sequence handling |
-| Longformer-base | MALT → TRACE (transfer) | 0.70-0.85 | Best expected |
+| Longformer-base | MALT+RRH → TRACE (transfer) | 0.70-0.85 | Best expected |
 | Hybrid ensemble | All sources | 0.72-0.85 | Final system |
 
 **Transfer learning pipeline:**
-1. Pre-fine-tune encoder on MALT (~10K examples) for binary classification
+1. Pre-fine-tune encoder on MALT (~10K examples) + Realistic Reward Hacks (~1.6K examples) for binary classification
 2. Fine-tune on TRACE (517 examples)
-3. Compare: TRACE-only vs. MALT→TRACE vs. combined MALT+TRACE
+3. Compare: TRACE-only vs. MALT→TRACE vs. RRH→TRACE vs. combined (MALT+RRH)→TRACE
 
 **Interpretation deliverables:**
 - Confusion matrices for all model variants
@@ -198,7 +216,8 @@ With 517 primary examples, aggressive regularization is critical:
 reward-hacking/
 ├── data/               # Downloaded datasets (gitignored)
 │   ├── trace/          # TRACE benchmark (517 trajectories)
-│   └── malt/           # MALT supplement (~10K trajectories)
+│   ├── malt/           # MALT supplement (~10K trajectories)
+│   └── rrh/            # Realistic Reward Hacks (~1.6K examples)
 ├── notebooks/          # Jupyter notebooks per milestone
 │   └── 01_eda.ipynb    # MS1: Exploratory Data Analysis
 ├── src/                # Source code
