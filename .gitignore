@@ -17,11 +17,15 @@ models/*.bin
 models/*.safetensors
 
 # Data (download separately)
+data
 data/*.json
 data/*.jsonl
 data/*.csv
 data/*.parquet
 data/raw/
+data/trace/
+data/malt/
+data/realistic_reward_hacks/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -33,6 +37,9 @@ data/raw/
 # OS
 .DS_Store
 Thumbs.db
+
+# Secrets
+.env
 
 # Misc
 *.log
