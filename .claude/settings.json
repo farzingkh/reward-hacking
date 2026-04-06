@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(du -sh data/reward-hacking-corpus/data/merged/*.jsonl data/reward-hacking-corpus/data/agent/*.jsonl data/malt/public/malt_metadata.jsonl)",
+      "Bash(wc -l data/reward-hacking-corpus/data/merged/*.jsonl data/malt/public/malt_metadata.jsonl)",
+      "Bash(python3 -c ':*)",
+      "WebFetch(domain:metr.org)"
+    ]
+  }
+}
