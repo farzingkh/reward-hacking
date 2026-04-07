@@ -1,5 +1,9 @@
 # Dataset Descriptions — Reward Hacking Detection Project
 
+**important:** This document provides detailed descriptions of the datasets we are using for training and evaluating our reward hacking detection model. It's generated 
+by Claude so make sure to review for accuracy and completeness. 
+
+
 ## 1. TRACE (Testing Reward Anomalies in Code Environments)
 
 **Source:** [PatronusAI/trace-dataset](https://huggingface.co/datasets/PatronusAI/trace-dataset)  
