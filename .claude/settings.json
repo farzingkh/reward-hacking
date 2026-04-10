@@ -7,7 +7,15 @@
       "WebFetch(domain:metr.org)",
       "Read(//tmp/**)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:arxiv.org)"
+      "WebFetch(domain:arxiv.org)",
+      "Bash(python3 -c \"import json; json.load\\(open\\('notebooks/MS2_Data_Wrangling_and_Project_Redifinition.ipynb'\\)\\)\")",
+      "Bash(git add:*)",
+      "Bash(git rebase:*)",
+      "Bash(GIT_EDITOR=true git rebase --continue)",
+      "Bash(git -c core.editor=true rebase --continue)",
+      "Bash(GIT_SEQUENCE_EDITOR=true GIT_EDITOR=true git -c core.editor=true -c sequence.editor=true rebase --continue)",
+      "Bash(GIT_EDITOR=\"echo\" git rebase --continue)",
+      "Bash(git -c core.editor=\"cat\" rebase --continue)"
     ]
   }
 }
