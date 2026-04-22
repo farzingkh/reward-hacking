@@ -9,3 +9,7 @@ seaborn
 jupyter
 tqdm
 dotenv
+accelerate
+bitsandbytes
+sentence-transformers
+umap-learn

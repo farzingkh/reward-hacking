@@ -15,7 +15,9 @@
       "Bash(git -c core.editor=true rebase --continue)",
       "Bash(GIT_SEQUENCE_EDITOR=true GIT_EDITOR=true git -c core.editor=true -c sequence.editor=true rebase --continue)",
       "Bash(GIT_EDITOR=\"echo\" git rebase --continue)",
-      "Bash(git -c core.editor=\"cat\" rebase --continue)"
+      "Bash(git -c core.editor=\"cat\" rebase --continue)",
+      "Bash(python3 -c ' *)",
+      "Read(//proc/**)"
     ]
   }
 }
