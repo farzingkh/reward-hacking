@@ -1,0 +1,29 @@
+## Introduction
+
+We aim to develop a model to accurately identify reward hacking in AI agent trajectories: cases where the AI agent takes actions that don't correspond with the user's desired and requested behavior. We will do so using a combination of four datasets:
+
+- [PatronusAI/trace-dataset](<https://huggingface.co/datasets/PatronusAI/trace-dataset>) — 517 labeled trajectories
+
+- [metr-evals/malt-public](<https://huggingface.co/datasets/metr-evals/malt-public>) — \~10K+ trajectories
+
+- [Jozdien/realistic_reward_hacks](<https://huggingface.co/datasets/Jozdien/realistic_reward_hacks>) — 100+ trajectories
+
+- [BJS-Innovation-Lab/reward-hacking-corpus](<https://github.com/BJS-Innovation-Lab/reward-hacking-corpus>) — GitHub repository with 100+ trajectories
+
+Descriptions, summary statistics, schemas, and sample trajectories for each of these datasets can be found in Section 2: Data Understanding &amp; Summary. While each of these four datasets contains benign and hacked trajectories in varying quantities and proportions, they are recorded in varying formats and classified with different labels. Our work to unify the trajectories and labeling into a single unified system is detailed in Section 2: Data Unification &amp; Cleaning.
+
+In Milestone 2, our initial exploratory data analysis gave us more information about the overall distributions in our data and a peek at variation in the data between hacked and benign trajectories. While our combined dataset is heavily weighted toward benign trajectories (thanks largely to the MALT dataset), with 84% benign trajectories and 16% hacked, we will handle that imbalance in our model with class weighting and classification threshold tuning. The length of individual trajectories varies widely in our data, with the overall distribution being strongly right-tailed. The data also show also some variation in tool usage between benign and hacked trajectories, signals which our model should be able to recognize in training.
+
+We chose to use Qwen3-Embedding-0.6B to tokenize our trajectories, using left padding to align the last real token of each trajectory. (See Section 4.2: Tokenization &amp; Token-level Analysis.) As at the character level, the distribution of the tokenized lengths of the trajectories is strongly right-tailed, so to bring the longer trajectories down to a manageable level, we truncated their length to our desired context window size (32K). This truncation also has the effect of focusing the model on the earlier portions of the trajectories, a helpful characteristic given that in usage, it is most helpful for this type of model to be able to identify reward hacking early on. Keeping just the beginning of the trajectories also removes human inputs which might "give away" the presence of reward hacking, such as when the human points out that the model is behaving incorrectly.
+
+To prepare the data for our base model, we used Qwen3-Embedding-0.6B again, this time on the trajectory level, to create vector embeddings of each trajectory. (See Section 5: Baseline Modeling.) We performed a UMAP clustering analysis to give ourselves a view of class separation in the vectorized trajectories. While a plot of this UMAP projection doesn't show clear and distinct separation between the two classes, it does show some differences, and the nature of UMAP projections means that much of the appearance of the projection results from our choices of hyperparameters.
+
+We split our data into training (60%), validation (20%), and testing (20%) sets.
+
+Our base model uses a ProbeMLP structure, passing those vector embeddings through four linear layers of a relatively small feed-forward neural network, applying dropout between each layer. We felt this structure was a good baseline model because it's complex enough to generate meaningful results, but still simple enough that a more complex model should be able to beat it. We trained the model using weighted BCE loss and the Adam optimizer with a learning rate scheduler set to reduce the learning rate as the model's performance plateaued. We also used an early stopping mechanism, which halted the model's training after 35 epochs. We then used the weights from the epoch with the best validation loss.
+
+To handle the class imbalance in the data, we used weighted BCE loss (as previously mentioned), giving the two classes (benign and hacked) weights inversely proportional to their share of the trajectories, so that the benign class (with far lower representation in the data) would be given an larger, equalizing weight during training. We also altered our classification threshold from the usual 0.5 by analyzing the model's F1 score at the full range of thresholds 0-1. The threshold with the highest F1 score was 0.6.
+
+Our baseline's model's performance seems strong, with an AUC on the test data of 0.977 and a recall of 0.91, precision of 0.77, and F1 of 0.83 at the 0.60 classification threshold. Only 27 hacked cases were misclassified as benign out of 1780 total trajectories, and only 82 benign trajectories were misclassified as hacked.
+
+For our next model, we plan to replace our ProbeMLP structure with a turn-aware transformer. Collapsing the entire trajectory into a single embedding vector necessarily averages out signals in the data, so allowing a transformer to analyze the full interaction should give better performance. Each turn will be embedded and combined with a positional encoding and a role encoding indicating whether the turn is a human prompt or AI response. We will use a `[CLS]` token appended to each trajectory for classification, and continue with the weighted BCE loss function and tuned classification threshold from our base model. If this proves to be successful, we can then take the model a step further by fine-tuning the Qwen3-Embedding weights to better match our use case.
