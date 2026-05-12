@@ -45,6 +45,10 @@ We unify four publicly available trajectory datasets into a single schema. The c
 
 The main notebook auto-downloads each dataset to `./data/` on first run if it is missing.
 
+**Pre-built mirror.** A Google Drive folder hosts the unified corpus, the Qwen3 trajectory- and turn-level embeddings, and the trained MLP / turn-transformer / LoRA checkpoints, so the heavy steps (download → embed → train) can be skipped:
+
+📂 [Drive: unified data + embeddings + checkpoints](https://drive.google.com/drive/folders/1vIx-kzhyA3ufxhiqUt37UNE6Qjm24_FP?usp=sharing)
+
 ## Repository Structure
 
 ```
@@ -97,6 +101,15 @@ Choose *Restart kernel + Run All*. On first run the notebook will:
 3. Train the MLP baseline, the off-the-shelf turn-Transformer, the LoRA adapter, and the fine-tuned turn-Transformer. Each training block is guarded by `if checkpoint.exists(): load else: train; save`, so subsequent runs reuse the cached artifacts.
 
 A CUDA GPU (≥16 GB VRAM) is strongly recommended. Cold end-to-end runtime is several hours on a single A100; warm re-runs from cached embeddings and checkpoints complete in ~10 minutes.
+
+### 4. (Optional) Warm-start from the Drive mirror
+
+To skip the cold path entirely — no HF gating, no embedding generation, no LoRA training — download the [project Drive folder](https://drive.google.com/drive/folders/1vIx-kzhyA3ufxhiqUt37UNE6Qjm24_FP?usp=sharing) and place its contents into the repo:
+
+- `data/ds_all_with_*_embeddings/` — cached Qwen3 trajectory- and turn-level embeddings
+- `models/` — trained MLP, turn-transformer, and LoRA checkpoints
+
+Every training cell in the notebook is guarded by `if checkpoint.exists(): load else: train`, so once these artifacts are in place a *Restart kernel + Run All* only re-runs evaluation and figure generation (~10 minutes on a single GPU).
 
 ## Reproducing the Headline Numbers
 
