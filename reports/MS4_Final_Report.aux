@@ -1,0 +1,75 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{trace2026}
+\citation{malt}
+\citation{jozdien-rrh}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Background \& Motivation}{1}{section.1}\protected@file@percent }
+\citation{bjs-corpus}
+\citation{trace2026}
+\citation{malt}
+\citation{jozdien-rrh}
+\citation{bjs-corpus}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Problem Statement}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data \& EDA}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Datasets and Unification}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Source datasets contributing to the unified corpus.}}{2}{table.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:datasets}{{1}{2}{Source datasets contributing to the unified corpus}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}EDA Findings That Drove Modeling Decisions}{2}{subsection.3.2}\protected@file@percent }
+\citation{qwen3embedding}
+\citation{ai-assist}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Distribution of labels by source in the unified corpus. MALT is heavily benign-skewed (7.8\% hacked) while TRACE and Realistic Reward Hacks are near-balanced. Per-cell loss weighting upweights rare cells such as hacked-MALT during training.}}{3}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:label-source}{{1}{3}{Distribution of labels by source in the unified corpus. MALT is heavily benign-skewed (7.8\% hacked) while TRACE and Realistic Reward Hacks are near-balanced. Per-cell loss weighting upweights rare cells such as hacked-MALT during training}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Truncated token length by label.}}{3}{figure.caption.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces After head truncation to 32K tokens (right), most fit comfortably but classes overlap, length is not a usable scalar feature.}}{3}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:token_lengths}{{3}{3}{After head truncation to 32K tokens (right), most fit comfortably but classes overlap, length is not a usable scalar feature}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methods \& Models}{3}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Embedding and Splits}{3}{subsection.4.1}\protected@file@percent }
+\citation{lora2021}
+\citation{ai-assist}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Off-the-shelf Qwen3 embeddings.}}{4}{figure.caption.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces UMAP projections. raw embeddings cluster by source (right panel of each pair) but barely by label (left panel).}}{4}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:umap}{{5}{4}{UMAP projections. raw embeddings cluster by source (right panel of each pair) but barely by label (left panel)}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Class-Imbalance Handling and Threshold}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Model 1 --- ProbeMLP (MS3 Baseline)}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Model 2 --- Turn-Level Transformer Probe}{4}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Model 3 --- Source-Invariant LoRA Fine-Tuning}{4}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:lora}{{4.5}{4}{Model 3 --- Source-Invariant LoRA Fine-Tuning}{subsection.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Generalization Test --- Leave-One-Source-Out}{5}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results \& Interpretation}{5}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Headline In-Distribution Results}{5}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Test-set performance, same 709-trajectory split across all models. CM rows are true label, columns predicted at the F1-optimal threshold.}}{5}{table.caption.6}\protected@file@percent }
+\newlabel{tab:headline}{{2}{5}{Test-set performance, same 709-trajectory split across all models. CM rows are true label, columns predicted at the F1-optimal threshold}{table.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Confusion matrices at F1-optimal thresholds. Model 3 reduces both false positives and false negatives versus Models 1--2.}}{6}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:cms}{{6}{6}{Confusion matrices at F1-optimal thresholds. Model 3 reduces both false positives and false negatives versus Models 1--2}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Source-Confounding Diagnostics}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Cross-Source Generalization (LOSO)}{6}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Leave-one-source-out AUC. Pre-FT uses off-the-shelf Qwen3 embeddings; post-FT uses LoRA + joint-loss embeddings. $\Delta $ is post minus pre.}}{6}{table.caption.8}\protected@file@percent }
+\newlabel{tab:loso}{{3}{6}{Leave-one-source-out AUC. Pre-FT uses off-the-shelf Qwen3 embeddings; post-FT uses LoRA + joint-loss embeddings. $\Delta $ is post minus pre}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Per-Source Test Performance and What the Model Learned}{6}{subsection.5.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces In-distribution per-source test AUC across the three models. $\Delta $ is Model 3 minus Model 2 (off-the-shelf turn transformer).}}{7}{table.caption.9}\protected@file@percent }
+\newlabel{tab:per-source-iid}{{4}{7}{In-distribution per-source test AUC across the three models. $\Delta $ is Model 3 minus Model 2 (off-the-shelf turn transformer)}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusions \& Discussion}{7}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Broader Impact}{7}{section.7}\protected@file@percent }
+\bibcite{trace2026}{{1}{}{{}}{{}}}
+\bibcite{malt}{{2}{}{{}}{{}}}
+\bibcite{jozdien-rrh}{{3}{}{{}}{{}}}
+\bibcite{bjs-corpus}{{4}{}{{}}{{}}}
+\bibcite{qwen3embedding}{{5}{}{{}}{{}}}
+\bibcite{lora2021}{{6}{}{{}}{{}}}
+\bibcite{umap}{{7}{}{{}}{{}}}
+\bibcite{ai-assist}{{8}{}{{}}{{}}}
+\bibcite{copilot}{{9}{}{{}}{{}}}
+\citation{copilot}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{8}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Additional EDA Figures}{8}{subsection.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Training Diagnostics}{8}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Artifact References}{8}{subsection.A.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Length distributions vary by source (left) and overlap heavily by label (right).}}{9}{figure.caption.11}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Tool-use patterns differ across sources; Realistic RH contributes no tool use.}}{9}{figure.caption.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Training and validation curves for all three models. Each panel shows train/val loss (left) and val AUC/accuracy (right) across epochs. Model 3 is the turn-transformer probe re-trained on the LoRA-fine-tuned encoder embeddings.}}{9}{figure.caption.13}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces F1-vs-threshold curves used to select the operating threshold (0.21 for Model 1, 0.60 for Model 2; 0.45 for Model 3, not shown).}}{9}{figure.caption.14}\protected@file@percent }
+\gdef \@abspage@last{9}
