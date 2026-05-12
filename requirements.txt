@@ -13,3 +13,4 @@ accelerate
 bitsandbytes
 sentence-transformers
 umap-learn
+peft
