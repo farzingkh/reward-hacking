@@ -133,7 +133,7 @@ If you build on this work, please cite:
   author = {Atchison Nevel, Bridget and Golkhosh, Farzin and McLellan, Jack},
   year   = {2026},
   note   = {CSCI E-109B Final Project, Harvard University},
-  url    = {https://github.com/<your-user-or-org>/reward-hacking}
+  url    = {https://github.com/farzingkh/reward-hacking}
 }
 ```
 
